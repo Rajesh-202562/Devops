@@ -1,0 +1,37 @@
+name: Java CI
+
+on: 
+  push:
+    branches: 
+      - master
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@master
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@master
+      with:
+        java-version: 1.8
+    - name: Build with Maven
+      run: mvn package --file pom.xml
+    - name: git config
+      run: git config --global user.email "sandesh.1rn14ec126@gmail.com" && git config --global user.name "sandesh2027"
+    - name : git add and commit 
+      run : git add . && git commit -m "commit msg added"
+    - name: remote name
+      run: git remote -v >> new.txt
+    - name : read
+      run : cat new.txt
+    - name : git push 
+      run : git push https://sandesh2027:${{secrets.SANDESH}}@github.com/sandesh2027/CodeDevOps/ HEAD:master
+    - name : deploy
+      run : curl -T "target/addressbook.war" "http://sandesh:${{secrets.TOMCAT}}@dd1de7817d59.ngrok.io/manager/text/deploy?path=/myapp&update=true"
+    - name : change directory
+      run : cd /home
+    - name : update
+      run : sudo apt-get update
+    - name : install docker
+      run : sudo apt-get install docker
